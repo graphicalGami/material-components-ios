@@ -10,11 +10,14 @@ let package = Package(
         .iOS(.v14),
     ],
     products: [
-        .library(name: "TextFields", targets: ["TextFields"])
+        .library(name: "TextFields", targets: ["TextFields"]),
+		.library(name: "ActivityIndicator", targets: ["ActivityIndicator"]),
+        .library(name: "ProgressView", targets: ["ProgressView"]),
     ],
     dependencies: [
         .package(url: "https://github.com/volvogroup-mobility/material-text-accessibility-ios", from: "2.0.1+volvo1"),
-        .package(url: "https://github.com/volvogroup-mobility/material-internationalization-ios", from: "3.0.0+volvo1")
+        .package(url: "https://github.com/volvogroup-mobility/material-internationalization-ios", from: "3.0.0+volvo1"),
+		.package(url: "https://github.com/graphicalGami/motion-animator-objc", revision: "08f0f758c7b9bf32a426f4b15ee85af64381abd7"),
     ],
     targets: [
         .target(
@@ -159,8 +162,6 @@ let package = Package(
             cSettings: [.headerSearchPath("private")]
         ),
 
-        // Private
-
         .target(
             name: "PrivateApplication",
             path: "components/private/Application/src",
@@ -177,5 +178,51 @@ let package = Package(
             path: "components/private/Math/src",
             publicHeadersPath: "."
         ),
+		
+        .target(
+            name: "MinimumOS",
+            path: "components/MinimumOS/src",
+            publicHeadersPath: "."
+        ),
+
+        .target(
+            name: "ActivityIndicator",
+            dependencies: [
+                "Palettes",
+                "PrivateApplication",
+                "MinimumOS",
+                .product(name: "MDFInternationalization", package: "material-internationalization-ios"),
+                .product(name: "MotionAnimator", package: "motion-animator-objc"),
+            ],
+            path: "components/ActivityIndicator/src",
+            resources: [
+                .copy("MaterialActivityIndicator.bundle")
+            ],
+            publicHeadersPath: ".",
+            cSettings: [
+                .headerSearchPath("private"),
+                .headerSearchPath("../../MinimumOS/src"),
+            ]
+        ),
+
+        .target(
+            name: "ProgressView",
+            dependencies: [
+                "Palettes",
+                "PrivateMath",
+                "Shapes",
+                .product(name: "MDFInternationalization", package: "material-internationalization-ios"),
+            ],
+            path: "components/ProgressView/src",
+            exclude: ["Theming"],
+            resources: [
+                .copy("MaterialProgressView.bundle")
+            ],
+            publicHeadersPath: ".",
+            cSettings: [
+                .headerSearchPath("private"),
+            ]
+        ),
+
     ]
 )

@@ -14,7 +14,7 @@
 
 #import "MDCActivityIndicator.h"
 
-#import <MotionAnimator/MotionAnimator.h>
+#import <MotionAnimator.h>
 #import <QuartzCore/QuartzCore.h>
 
 #import "private/MDCActivityIndicator+Private.h"

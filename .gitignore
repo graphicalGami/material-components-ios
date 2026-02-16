@@ -81,4 +81,5 @@ docsite-generator
 # Compiled python
 *.pyc
 
-
+.build
+Package.resolved
